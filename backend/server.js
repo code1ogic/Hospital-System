@@ -12,7 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Get
+app.use('/api/patients', require('./routes/patientRoutes'));
 app.use('/api/doctors', require('./routes/doctorRoutes'));
+app.use('/api/staff', require('./routes/staffRoutes'));
 app.use('/api/patient-history', require('./routes/patientHistoryRoutes'));
 
 app.use(errorHandler);

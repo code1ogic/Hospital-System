@@ -26,7 +26,7 @@ const authenticateRoutes = asyncHandler(async (req, res, next) => {
 					next();
 				} else {
 					res.status(401);
-					res.send('Not Authorised!');
+					res.send('Not authorised, Invalid token!');
 				}
 			});
 		} catch (error) {
@@ -36,7 +36,7 @@ const authenticateRoutes = asyncHandler(async (req, res, next) => {
 	}
 	if (!token) {
 		res.status(401);
-		throw new Error('Not Authorised as no token found!');
+		throw new Error('Not Authorised, No token found!');
 	}
 });
 

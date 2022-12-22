@@ -4,16 +4,16 @@ const router = express.Router();
 const authenticateRoutes = require('../middleware/authMiddleware');
 const getUserRole = require('../middleware/userRoleMiddleware');
 const {
-	getDoctors,
-	getDoctor,
-	registerDoctor,
-	logInDoctor,
+	getStaff,
+	getAStaff,
+	registerStaff,
+	logInStaff,
 	getMe,
-} = require('../controllers/doctorController');
+} = require('../controllers/staffController');
 
-router.route('/').get(getDoctors).post(registerDoctor);
-router.route('/login').post(logInDoctor);
+router.route('/').get(getStaff).post(registerStaff);
+router.route('/login').post(logInStaff);
 router.route('/me').get(getUserRole, authenticateRoutes, getMe);
-router.route('/:id').get(getDoctor);
+router.route('/:id').get(getAStaff);
 
 module.exports = router;
