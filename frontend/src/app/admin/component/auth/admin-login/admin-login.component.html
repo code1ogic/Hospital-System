@@ -1,0 +1,43 @@
+<div class="container-fluid bg-dark" style="height: 500px; overflow: hidden;">
+  <mat-grid-list cols="4" rowHeight="100px" style="margin-top: 50px;">
+    <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="5">
+    </mat-grid-tile>
+    <mat-grid-tile
+        [colspan]="2"
+        [rowspan]="5"
+        appearance="fill">
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="font-size: larger; padding: 5px;">Admin Login</mat-card-title>
+          </mat-card-header>
+          <form ngSubmit="">
+            <p>
+              <mat-form-field appearance="outline" >
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="admin@gmail.com" [(ngModel)]="email" name="email">
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="password" type="text" [(ngModel)]="password1" name="password1">
+              </mat-form-field>
+            </p>
+          </form>
+          <mat-card-actions align="end">
+            <button mat-raised-button mt-fab color="primary" *ngIf="!show_spinner" (click) = "adminLogin()">Login</button>
+            <mat-spinner *ngIf="show_spinner" diameter="50"></mat-spinner>
+          </mat-card-actions>
+        </mat-card>
+
+    </mat-grid-tile>
+    <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="5">
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>
