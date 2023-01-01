@@ -9,13 +9,15 @@ const generateJWT = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
 };
 
-const getDoctorId = async (email) => {
-	const searchQuery = `SELECT * FROM doctors WHERE LOWER(email) = LOWER('${email}')`;
+const validateDoctorId = async (id) => {
+	const searchQuery = `SELECT * FROM doctors WHERE dId = '${id}'`;
+	let doctor;
 	dbConnection.query(searchQuery, (err, result) => {
 		if (err) throw new Error(err);
-		if (result === 1) return result[0].dId;
-		return null;
+		if (result.length === 1) doctor = result[0];
+		else doctor = false;
 	});
+	return doctor;
 };
 
 // @desc Get all doctors
@@ -40,7 +42,7 @@ const getDoctor = asyncHandler(async (req, res) => {
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
 		if (result.length === 0) {
-			res.status(404).send('User Does not exists!');
+			res.status(404).send('User does not exists!');
 		} else res.status(200).json(result[0]);
 	});
 });
@@ -150,4 +152,5 @@ module.exports = {
 	logInDoctor,
 	getMe,
 	generateJWT,
+	validateDoctorId,
 };

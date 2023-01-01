@@ -23,6 +23,8 @@ const connectDB = async () => {
 			'CREATE TABLE IF NOT EXISTS patients (pId varchar(255) NOT NULL, bId varchar(255),dId varchar(255), name varchar(50), address varchar(255), dob DATE, gender varchar(10), contact varchar(10), PRIMARY KEY(pId), FOREIGN KEY (dId) REFERENCES doctors(dId));';
 		const tableStaff =
 			'CREATE TABLE IF NOT EXISTS staff (sId varchar(255) NOT NULL, name varchar(50), email varchar(255) NOT NULL, password varchar(255) NOT NULL, dob DATE, role varchar(50), gender varchar(10), doj DATE, contact varchar(10), PRIMARY KEY(sId));';
+		const tableAppointment =
+			'CREATE TABLE IF NOT EXISTS appointment (aId varchar(255) NOT NULL, dId varchar(255), pId varchar(255) NOT NULL,apptDate DATE, status TINYINT, PRIMARY KEY(aId));';
 
 		dbConnection.query(tableDoctors, (error, result, fields) => {
 			if (error) {
@@ -39,6 +41,13 @@ const connectDB = async () => {
 		});
 
 		dbConnection.query(tableStaff, (error, result, fields) => {
+			if (error) {
+				console.log(error);
+				process.exit(1);
+			}
+		});
+
+		dbConnection.query(tableAppointment, (error, result, fields) => {
 			if (error) {
 				console.log(error);
 				process.exit(1);

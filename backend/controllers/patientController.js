@@ -30,6 +30,25 @@ const getPatient = asyncHandler(async (req, res) => {
 	});
 });
 
+// @desc Get a patient by its contact No
+// @route GET /api/patients/find
+// @access Public
+const findPatient = asyncHandler(async (req, res) => {
+	const { contact } = req.query;
+	if (!contact) {
+		res.status(400);
+		throw new Error('Invalid Request!');
+	}
+	const sql = `SELECT * FROM patients WHERE contact='${contact}';`;
+	dbConnection.query(sql, (err, result) => {
+		if (err) throw err;
+
+		if (result.length === 0) res.status(404).send('User Does not exists!');
+
+		res.status(200).json(result[0]);
+	});
+});
+
 // @desc add a patient
 // @route POST /api/patients
 // @access Public
@@ -70,4 +89,4 @@ const addPatient = asyncHandler(async (req, res) => {
 	});
 });
 
-module.exports = { getPatients, getPatient, addPatient };
+module.exports = { getPatients, getPatient, addPatient, findPatient };
