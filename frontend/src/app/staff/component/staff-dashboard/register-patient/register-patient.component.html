@@ -1,0 +1,47 @@
+<div class="container-fluid m-0 p-0">
+
+  <mat-stepper orientation="vertical">
+    <mat-step>
+      <ng-template matStepLabel>Personal Details</ng-template>
+      <ng-template matStepContent>
+        <p>Enter Patient Name :</p>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="First name Last name" required name="name" [(ngModel)]="patientObj.name">
+        </mat-form-field> <br>
+        <button mat-raised-button matStepperNext>Next</button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Contact Details</ng-template>
+      <ng-template matStepContent>
+        <p>Enter Mobile Number :</p>
+        <mat-form-field appearance="fill">
+          <mat-label>Mobile</mat-label>
+          <input matInput placeholder="7845125689" required name="contact" [(ngModel)]="patientObj.contact">
+        </mat-form-field> <br>
+        <button mat-raised-button matStepperNext>Next</button>
+      </ng-template>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepContent>
+        <div *ngIf="patientObj.name && patientObj.contact">
+          <p>Are you sure you want register ?</p>
+          <button class="me-2" mat-raised-button (click)="ngOnInit()" >No</button>
+          <button mat-raised-button color="primary" (click)="registerPatient()">Yes</button>
+        </div>
+        <div *ngIf="!patientObj.name">
+          <p>Please Enter valid personal details</p>
+        </div>
+        <div *ngIf="patientObj.name && !patientObj.contact">
+          <p>Please enter valid contact details.</p>
+        </div>
+      </ng-template>
+    </mat-step>
+  </mat-stepper>
+
+
+</div>
+
+

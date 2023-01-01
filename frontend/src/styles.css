@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed&display=swap');
+
+* {
+  margin: 0%;
+  padding: 0%;
+  font-family: 'Barlow Semi Condensed', sans-serif;;
+}
+
+:root {
+  --primary: #e91e63;
+  --accent: #607d8b;
+  --warn: #f44336;
+
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.blur-background {
+  background-color:rgba(255,255,255,.3);
+  backdrop-filter: blur(10px);
+}

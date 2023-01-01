@@ -1,0 +1,38 @@
+<form class="example-form text-center" [formGroup]="doctor" >
+  <h2 class=""><b>Register Doctor</b></h2>
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Full Name</mat-label>
+    <input matInput  formControlName="name" name="name">
+    <mat-error *ngIf="doctor.get('name')?.invalid && (doctor.get('name')?.dirty || doctor.get('name')?.touched)">
+      Please enter valid name.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="abc@gmail.com" formControlName="email" name="email">
+    <mat-error *ngIf="doctor.get('email')?.invalid && (doctor.get('email')?.dirty || doctor.get('email')?.touched)">
+      Please enter a valid email address.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password" name="password">
+    <mat-error *ngIf="doctor.get('password')?.invalid && (doctor.get('password')?.dirty || doctor.get('password')?.touched)">
+      Please enter a valid password
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Contact No</mat-label>
+    <input matInput placeholder="9287458455" formControlName="contactNo" name="contactNo">
+    <mat-error *ngIf="doctor.get('contactNo')?.invalid && (doctor.get('contactNo')?.dirty || doctor.get('contactNo')?.touched)">
+      Please enter a valid contact number.
+    </mat-error>
+  </mat-form-field>
+
+  <div align="end">
+    <button mat-raised-button cdkFocusInitial [disabled]="!doctor.valid" (click)="addDoctor()" color="primary">Ok</button>
+  </div>
+</form>
