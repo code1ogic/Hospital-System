@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { FormsModule } from '@angular/forms';
 import { OpenDialogComponent } from './shared/component/open-dialog/open-dialog.component';
+import { StaffModule } from './staff/staff.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { OpenDialogComponent } from './shared/component/open-dialog/open-dialog.
     DoctorModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    StaffModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddDoctorDialogComponent } from './component/admin-dashboard/dialog/add-doctor-dialog/add-doctor-dialog.component';
 import { AddStaffDialogComponent } from './component/admin-dashboard/dialog/add-staff-dialog/add-staff-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ViewAllDoctorsComponent } from './component/admin-dashboard/view-all-doctors/view-all-doctors.component';
+import { ViewAllPatientsComponent } from './component/admin-dashboard/view-all-patients/view-all-patients.component';
 
 
 
@@ -17,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     AdminDashboardComponent,
     AdminComponent,
     AddDoctorDialogComponent,
-    AddStaffDialogComponent
+    AddStaffDialogComponent,
+    ViewAllDoctorsComponent,
+    ViewAllPatientsComponent
   ],
   imports: [
     CommonModule,

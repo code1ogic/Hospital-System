@@ -4,7 +4,6 @@ import { DoctorDashboardComponent } from './component/doctor-dashboard/doctor-da
 import { DoctorLoginComponent } from './component/auth/doctor-login/doctor-login.component';
 
 
-
 @NgModule({
   declarations: [
     DoctorDashboardComponent,

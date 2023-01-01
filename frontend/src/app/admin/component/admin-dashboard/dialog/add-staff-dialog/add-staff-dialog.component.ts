@@ -13,7 +13,7 @@ export class AddStaffDialogComponent implements OnInit {
   constructor(private fb : FormBuilder, private dialogRef: MatDialogRef<AddStaffDialogComponent>) {
     this.staff = fb.group({
       email: [Validators.required, Validators.email],
-      fullName:  [Validators.required],
+      name:  [Validators.required],
       password: [Validators.required, Validators.minLength(6)],
       contactNo : [Validators.required]
     });
@@ -22,7 +22,7 @@ export class AddStaffDialogComponent implements OnInit {
   ngOnInit(): void {
     this.staff = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      fullName: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       contactNo : new FormControl('', [Validators.required,])
     });

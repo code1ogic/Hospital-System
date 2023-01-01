@@ -2,8 +2,8 @@
   <h2 class="text-warning">Register Staff</h2>
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Full Name</mat-label>
-    <input matInput  formControlName="fullName" name="fullName">
-    <mat-error *ngIf="staff.get('fullName')?.invalid && (staff.get('fullName')?.dirty || staff.get('fullName')?.touched)">
+    <input matInput  formControlName="name" name="name">
+    <mat-error *ngIf="staff.get('name')?.invalid && (staff.get('name')?.dirty || staff.get('name')?.touched)">
       Please enter valid name.
     </mat-error>
   </mat-form-field>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OpenDialogComponent } from 'src/app/shared/component/open-dialog/open-dialog.component';
 import { DataService } from '../../service/data.service';
 import { AddDoctorDialogComponent } from './dialog/add-doctor-dialog/add-doctor-dialog.component';
 import { AddStaffDialogComponent } from './dialog/add-staff-dialog/add-staff-dialog.component';
@@ -29,11 +30,17 @@ export class AdminDashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        // this.dataService.addDoctor(result).subscribe(res => {
-        //   this._snackBar.open("Doctor Regitration complete", "Ok",{
-        //     duration: 3000
-        //   });
-        // })
+        this.dataService.addDoctor(result).subscribe(res => {
+          this._snackBar.open("Doctor Regitration is successful", "Ok",{
+            duration: 3000
+          });
+        }, err => {
+          this.dialog.open(OpenDialogComponent,{
+            height: 'auto',
+            width: '400px',
+            position: {top: '10px'},
+            data: { message: err.message, title : 'Registration Failed'}})
+        })
       }
     })
   }
@@ -46,7 +53,14 @@ export class AdminDashboardComponent implements OnInit {
       backdropClass: "blur-background"
      })
 
-    dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.dataService.addStaff(result).subscribe(res => {
+          this._snackBar.open("Staff Regitration is successful", "Ok",{
+            duration: 3000
+          });
+        })
+      }
     })
   }
 

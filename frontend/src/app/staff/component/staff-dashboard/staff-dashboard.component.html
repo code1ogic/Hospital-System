@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+<mat-toolbar-row>
+  <span> Hospital Management System</span>
+  <span class="example-spacer"></span>
+  <button mat-flat-button color="primary" id="logout" (click)="logout()">Logout</button>
+</mat-toolbar-row>
+</mat-toolbar>
+
+<mat-drawer-container class="example-container">
+  <mat-tab-group animationDuration="0ms" mat-stretch-tabs>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon me-2">home</mat-icon>
+        Home
+      </ng-template>
+      <app-home></app-home>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon me-2">person_add</mat-icon>
+        Register Patient
+      </ng-template>
+      <app-register-patient></app-register-patient>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon me-2">add_box</mat-icon>
+        Book Appointment
+      </ng-template>
+      <app-book-appointment></app-book-appointment>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon me-2">account_circle</mat-icon>
+        Profile
+      </ng-template>
+      <app-profile></app-profile>
+    </mat-tab>
+  </mat-tab-group>
+
+</mat-drawer-container>

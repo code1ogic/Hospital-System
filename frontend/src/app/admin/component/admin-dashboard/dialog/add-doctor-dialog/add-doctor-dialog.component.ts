@@ -13,7 +13,7 @@ export class AddDoctorDialogComponent implements OnInit {
   constructor(private fb : FormBuilder, private dialogRef: MatDialogRef<AddDoctorDialogComponent>) {
     this.doctor = fb.group({
       email: [Validators.required, Validators.email],
-      fullName:  [Validators.required],
+      name:  [Validators.required],
       password: [Validators.required, Validators.minLength(6)],
       contactNo : [Validators.required]
     });
@@ -22,7 +22,7 @@ export class AddDoctorDialogComponent implements OnInit {
   ngOnInit(): void {
     this.doctor = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      fullName: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       contactNo : new FormControl('', [Validators.required,])
     });
