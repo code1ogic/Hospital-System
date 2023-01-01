@@ -25,7 +25,7 @@ const getPatient = asyncHandler(async (req, res) => {
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
 
-		if (result.length === 0) res.status(404).send('User Does not exists!');
+		if (result.length === 0) res.status(404).send('Patient User do not exist!');
 		res.status(200).json(result[0]);
 	});
 });
@@ -43,7 +43,7 @@ const findPatient = asyncHandler(async (req, res) => {
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
 
-		if (result.length === 0) res.status(404).send('User Does not exists!');
+		if (result.length === 0) res.status(404).send('patient User do not exist!');
 
 		res.status(200).json(result[0]);
 	});
@@ -53,10 +53,10 @@ const findPatient = asyncHandler(async (req, res) => {
 // @route POST /api/patients
 // @access Public
 const addPatient = asyncHandler(async (req, res) => {
-	const { name, contact } = req.body;
+	const { name, contact, address, dob, gender } = req.body;
 	if (!contact || !name) {
 		res.status(400);
-		throw new Error('Kindly provide valid data!');
+		throw new Error('Kindly provide valid patient data!');
 	}
 
 	//check if user already present
@@ -67,25 +67,25 @@ const addPatient = asyncHandler(async (req, res) => {
 
 		if (result.length !== 0) {
 			res.status(400);
-			res.send('User already present..!');
+			res.send('Patient user already present..!');
+		} else {
+			const pId = uuid.v4();
+			const insertUser = `INSERT INTO patients (pId, name, contact,address,dob,gender) VALUES ('${pId}','${name}','${contact}','${address}','${dob}','${gender}')`;
+
+			dbConnection.query(insertUser, (err, result) => {
+				if (err) throw new Error(err);
+
+				const newUser = {
+					pId,
+					name,
+					contact,
+				};
+
+				res.status(201).json({
+					...newUser,
+				});
+			});
 		}
-	});
-
-	const pId = uuid.v4();
-	const insertUser = `INSERT INTO patients (pId, name, contact) VALUES ('${pId}','${name}','${contact}')`;
-
-	dbConnection.query(insertUser, (err, result) => {
-		if (err) throw new Error(err);
-
-		const newUser = {
-			pId,
-			name,
-			contact,
-		};
-
-		res.status(201).json({
-			...newUser,
-		});
 	});
 });
 

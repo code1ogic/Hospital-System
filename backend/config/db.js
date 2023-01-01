@@ -19,12 +19,12 @@ const connectDB = async () => {
 		dbConnection.query(`USE hospital_system_db;`);
 		const tableDoctors =
 			'CREATE TABLE IF NOT EXISTS doctors (dId varchar(255) NOT NULL, name varchar(50), email varchar(255) NOT NULL, password varchar(255) NOT NULL, dob DATE, degree varchar(50), department varchar(50), gender varchar(10), doj DATE, contact varchar(10), PRIMARY KEY(dId));';
-		const tableUsers =
-			'CREATE TABLE IF NOT EXISTS patients (pId varchar(255) NOT NULL, bId varchar(255),dId varchar(255), name varchar(50), address varchar(255), dob DATE, gender varchar(10), contact varchar(10), PRIMARY KEY(pId), FOREIGN KEY (dId) REFERENCES doctors(dId));';
+		const tablePatients =
+			'CREATE TABLE IF NOT EXISTS patients (pId varchar(255) NOT NULL, name varchar(50), address varchar(255), dob DATE, gender varchar(10), contact varchar(10), PRIMARY KEY(pId));';
 		const tableStaff =
 			'CREATE TABLE IF NOT EXISTS staff (sId varchar(255) NOT NULL, name varchar(50), email varchar(255) NOT NULL, password varchar(255) NOT NULL, dob DATE, role varchar(50), gender varchar(10), doj DATE, contact varchar(10), PRIMARY KEY(sId));';
 		const tableAppointment =
-			'CREATE TABLE IF NOT EXISTS appointment (aId varchar(255) NOT NULL, dId varchar(255), pId varchar(255) NOT NULL,apptDate DATE, status TINYINT, PRIMARY KEY(aId));';
+			'CREATE TABLE IF NOT EXISTS appointment (aId varchar(255) NOT NULL, dId varchar(255), pId varchar(255) NOT NULL, apptDate DATE,type varchar(255),information varchar(255),status TINYINT, PRIMARY KEY(aId));';
 
 		dbConnection.query(tableDoctors, (error, result, fields) => {
 			if (error) {
@@ -33,7 +33,7 @@ const connectDB = async () => {
 			}
 		});
 
-		dbConnection.query(tableUsers, (error, result, fields) => {
+		dbConnection.query(tablePatients, (error, result, fields) => {
 			if (error) {
 				console.log(error);
 				process.exit(1);

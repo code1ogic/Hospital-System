@@ -8,8 +8,8 @@ const { validateDoctorId } = require('./doctorController');
 // @route GET /api/appointments?dId=something&date=something
 // @access Public
 const getAppointments = asyncHandler(async (req, res) => {
-	const { dId, date } = req.query;
-	if (!dId || !date) {
+	const { pId, dId, date } = req.query;
+	if ((!pId, !dId || !date)) {
 		res.status(400);
 		throw new Error('Invalid get all Appointments request!');
 	}
@@ -24,7 +24,7 @@ const getAppointments = asyncHandler(async (req, res) => {
 		dbConnection.query(sql, (err, result) => {
 			if (err) throw err;
 
-			res.status(200).json(result);
+			res.status(200).json(result[0]);
 		});
 	}
 });
@@ -34,7 +34,7 @@ const getAppointments = asyncHandler(async (req, res) => {
 // @access Public
 
 const createAppointment = asyncHandler(async (req, res) => {
-	const { pId, dId, date } = req.body;
+	const { pId, dId, date, type, information } = req.body;
 
 	if (!pId || !dId || !date) {
 		res.status(400);
@@ -54,14 +54,12 @@ const createAppointment = asyncHandler(async (req, res) => {
 				res.status(400).send('This Patient has already an appointment today!');
 			else {
 				const aId = uuid.v4();
-				const sql = `INSERT INTO appointment (aId,dId,pId,apptDate,status) VALUES ('${aId}','${dId}','${pId}','${date}',0)`;
+				const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${date}','${type}','${information}', 0)`;
 
 				dbConnection.query(sql, (err, result) => {
 					if (err) throw new Error(err);
 					res.status(200).json({
 						aId,
-						pId,
-						dId,
 						date,
 						status: 'pending',
 					});

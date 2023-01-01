@@ -9,6 +9,7 @@ const generateJWT = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
 };
 
+// TODO : fix this
 const validateDoctorId = async (id) => {
 	const searchQuery = `SELECT * FROM doctors WHERE dId = '${id}'`;
 	let doctor;
@@ -42,7 +43,7 @@ const getDoctor = asyncHandler(async (req, res) => {
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
 		if (result.length === 0) {
-			res.status(404).send('User does not exists!');
+			res.status(404).send('Doctor User does not exists!');
 		} else res.status(200).json(result[0]);
 	});
 });
@@ -63,10 +64,20 @@ const getMe = asyncHandler(async (req, res) => {
 // @route POST /api/doctors
 // @access Public
 const registerDoctor = asyncHandler(async (req, res) => {
-	const { name, email, password } = req.body;
+	const {
+		name,
+		email,
+		password,
+		degree,
+		department,
+		contact,
+		gender,
+		dob,
+		doj,
+	} = req.body;
 	if (!email || !name || !password) {
 		res.status(400);
-		throw new Error('Please enter valid data..!');
+		throw new Error('Please enter valid data for registering a doctor..!');
 	}
 
 	//check if user already present
@@ -77,14 +88,14 @@ const registerDoctor = asyncHandler(async (req, res) => {
 
 		if (result.length !== 0) {
 			res.status(400);
-			res.send('User already present..!');
+			res.send('Doctor User already present..!');
 		} else {
 			//encrypt the password
 			const salt = await bcryptjs.genSalt(10);
 			const encryptedPassword = await bcryptjs.hash(password, salt);
 
 			const dId = uuid.v4();
-			const insertUser = `INSERT INTO doctors (dId, name, email, password) VALUES ('${dId}','${name}','${email}','${encryptedPassword}')`;
+			const insertUser = `INSERT INTO doctors VALUES ('${dId}','${name}','${email}','${encryptedPassword}','${dob}','${degree}','${department}','${gender}','${doj}','${contact}')`;
 
 			dbConnection.query(insertUser, (err, result) => {
 				if (err) throw new Error(err);
@@ -111,7 +122,7 @@ const logInDoctor = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		res.status(404);
-		throw new Error('Invalid Credentials');
+		throw new Error('Invalid doctor login credentials!');
 	}
 
 	//check if user with given email is present in system
@@ -122,7 +133,7 @@ const logInDoctor = asyncHandler(async (req, res) => {
 
 		if (result.length === 0) {
 			res.status(404);
-			res.send('User does not exists!');
+			res.send('Doctor User does not exists!');
 		} else {
 			//decrypt the password
 			const isCorrectPass = await bcryptjs.compare(
