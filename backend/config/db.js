@@ -1,0 +1,50 @@
+const mysql = require('mysql');
+
+const dbConnection = mysql.createConnection({
+	host: process.env.RDS_HOST,
+	user: process.env.RDS_USER,
+	password: process.env.RDS_PASSWORD,
+	database: process.env.RDS_DATABASE,
+});
+
+const connectDB = async () => {
+	dbConnection.connect((err) => {
+		if (err) {
+			console.log(err);
+			process.exit(1);
+		}
+		console.log(`Successfully connected with RDS mysql.!`);
+
+		dbConnection.query(`CREATE DATABASE IF NOT EXISTS hospital_system_db;`);
+		dbConnection.query(`USE hospital_system_db;`);
+		const tableDoctors =
+			'CREATE TABLE IF NOT EXISTS doctors (dId varchar(255) NOT NULL, name varchar(50), email varchar(255) NOT NULL, password varchar(255) NOT NULL, dob DATE, degree varchar(50), department varchar(50), gender varchar(10), doj DATE, contact varchar(10), PRIMARY KEY(dId));';
+		const tableUsers =
+			'CREATE TABLE IF NOT EXISTS patients (pId varchar(255) NOT NULL, bId varchar(255),dId varchar(255), name varchar(50), address varchar(255), dob DATE, gender varchar(10), contact varchar(10), PRIMARY KEY(pId), FOREIGN KEY (dId) REFERENCES doctors(dId));';
+		const tableStaff =
+			'CREATE TABLE IF NOT EXISTS staff (sId varchar(255) NOT NULL, name varchar(50), email varchar(255) NOT NULL, password varchar(255) NOT NULL, dob DATE, role varchar(50), gender varchar(10), doj DATE, contact varchar(10), PRIMARY KEY(sId));';
+
+		dbConnection.query(tableDoctors, (error, result, fields) => {
+			if (error) {
+				console.log(error);
+				process.exit(1);
+			}
+		});
+
+		dbConnection.query(tableUsers, (error, result, fields) => {
+			if (error) {
+				console.log(error);
+				process.exit(1);
+			}
+		});
+
+		dbConnection.query(tableStaff, (error, result, fields) => {
+			if (error) {
+				console.log(error);
+				process.exit(1);
+			}
+		});
+	});
+};
+
+module.exports = { connectDB, dbConnection };
