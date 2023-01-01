@@ -1,6 +1,6 @@
-export interface Doctor {
+export interface Staff {
   email : string,
   passoword : string,
   name : string,
-  contactNo: string
+  contactNo : string
 }
