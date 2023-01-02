@@ -23,7 +23,7 @@ const getAppointments = asyncHandler(async (req, res) => {
 				res.status(404).send('Doctor user do not exist! Invalid doctor Id');
 			} else {
 				response = result[0];
-				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, appt.apptDate FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${todaysDate}';`;
+				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, appt.apptDate, appt.status FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${todaysDate}' ORDER BY appt.apptDate, appt.status;`;
 				dbConnection.query(sql, (err, result) => {
 					if (err) throw err;
 					response = { ...response, appointments: result };
