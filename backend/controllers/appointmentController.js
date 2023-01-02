@@ -2,31 +2,36 @@ const asyncHandler = require('express-async-handler');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
-const { validateDoctorId } = require('./doctorController');
 
-// @desc Get all appointments for given doctor and date
-// @route GET /api/appointments?dId=something&date=something
+// @desc Get all appointments. if date is not passed , API will return todays appointments
+// if date is passed, it will return appointments after that date till todays date
+// @route GET /api/appointments?dId=id&date=date
 // @access Public
 const getAppointments = asyncHandler(async (req, res) => {
-	const { pId, dId, date } = req.query;
-	if ((!pId, !dId || !date)) {
-		res.status(400);
-		throw new Error('Invalid get all Appointments request!');
-	}
+	const { dId } = req.query;
+	//set here todays date
+	const todaysDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+	const date = req.query.date ? req.query.date : todaysDate;
 
-	//check if valid dId is provided TODO: Fix this
-	const temp = await validateDoctorId(dId);
-
-	if (!temp) {
-		res.status(404).send('Doctor does not exists!');
-	} else {
-		const sql = `SELECT * from appointment WHERE dId='${dId}' and apptDate='${date}';`;
-		dbConnection.query(sql, (err, result) => {
+	let response = {};
+	//check doctorId present and get the details
+	dbConnection.query(
+		`SELECT name as doctorName, department FROM doctors WHERE dId='${dId}'`,
+		(err, result) => {
 			if (err) throw err;
-
-			res.status(200).json(result[0]);
-		});
-	}
+			if (result.length === 0) {
+				res.status(404).send('Doctor user do not exist! Invalid doctor Id');
+			} else {
+				response = result[0];
+				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, appt.apptDate FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${todaysDate}';`;
+				dbConnection.query(sql, (err, result) => {
+					if (err) throw err;
+					response = { ...response, appointments: result };
+					res.status(200).json(response);
+				});
+			}
+		}
+	);
 });
 
 // @desc Create a appointment
@@ -44,26 +49,52 @@ const createAppointment = asyncHandler(async (req, res) => {
 	}
 	let response;
 	//check doctorId,patientId is present and get the details
-
-	//check if user already has a appointment with doctor
 	dbConnection.query(
-		`SELECT * from appointment WHERE pid='${pId}' and dId='${dId}' and apptDate='${date}';`,
+		`SELECT name as doctorName, department FROM doctors WHERE dId='${dId}'`,
 		(err, result) => {
 			if (err) throw err;
-			if (result.length !== 0)
-				res.status(400).send('This Patient has already an appointment today!');
-			else {
-				const aId = uuid.v4();
-				const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${date}','${type}','${information}', 0)`;
+			if (result.length === 0) {
+				res.status(404).send('Doctor user do not exists!');
+			} else {
+				response = result[0];
+				dbConnection.query(
+					`SELECT name as patientName, contact as patientContact FROM patients WHERE pId='${pId}'`,
+					(err, result) => {
+						if (err) throw err;
+						if (result.length === 0)
+							res.status(404).send('patient user do not exists!');
+						else {
+							response = { ...response, ...result[0] };
+							//check if user already has a appointment with doctor
+							dbConnection.query(
+								`SELECT aId from appointment WHERE pid='${pId}' and dId='${dId}' and apptDate='${date}';`,
+								(err, result) => {
+									if (err) throw err;
+									if (result.length !== 0)
+										res
+											.status(400)
+											.send(
+												'This patient already has an appointment with the given doctor today!'
+											);
+									else {
+										const aId = uuid.v4();
+										const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${date}','${type}','${information}',0);`;
 
-				dbConnection.query(sql, (err, result) => {
-					if (err) throw new Error(err);
-					res.status(200).json({
-						aId,
-						date,
-						status: 'pending',
-					});
-				});
+										dbConnection.query(sql, (err, result) => {
+											if (err) throw new Error(err);
+											res.status(200).json({
+												aId,
+												date,
+												...response,
+												status: 0,
+											});
+										});
+									}
+								}
+							);
+						}
+					}
+				);
 			}
 		}
 	);

@@ -9,18 +9,6 @@ const generateJWT = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
 };
 
-// TODO : fix this
-const validateDoctorId = async (id) => {
-	const searchQuery = `SELECT * FROM doctors WHERE dId = '${id}'`;
-	let doctor;
-	dbConnection.query(searchQuery, (err, result) => {
-		if (err) throw new Error(err);
-		if (result.length === 1) doctor = result[0];
-		else doctor = false;
-	});
-	return doctor;
-};
-
 // @desc Get all doctors
 // @route GET /api/doctors
 // @access Public
@@ -163,5 +151,4 @@ module.exports = {
 	logInDoctor,
 	getMe,
 	generateJWT,
-	validateDoctorId,
 };
