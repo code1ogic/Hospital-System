@@ -28,7 +28,7 @@ const getAStaff = asyncHandler(async (req, res) => {
 		if (err) throw err;
 
 		if (result.length === 0) {
-			res.status(404).send('User Does not exists!');
+			res.status(404).send('Staff User Does not exists!');
 		} else res.status(200).json(result[0]);
 	});
 });
@@ -37,10 +37,10 @@ const getAStaff = asyncHandler(async (req, res) => {
 // @route POST /api/staff
 // @access Public
 const registerStaff = asyncHandler(async (req, res) => {
-	const { name, email, password } = req.body;
+	const { name, email, password, dob, role, gender, doj, contact } = req.body;
 	if (!email || !name || !password) {
 		res.status(400);
-		throw new Error('Please enter valid data..!');
+		throw new Error('Please enter valid data for registering a staff..!');
 	}
 
 	//check if user already present
@@ -51,14 +51,14 @@ const registerStaff = asyncHandler(async (req, res) => {
 
 		if (result.length !== 0) {
 			res.status(400);
-			res.send('User already present..!');
+			res.send('Staff User already present..!');
 		} else {
 			//encrypt the password
 			const salt = await bcryptjs.genSalt(10);
 			const encryptedPassword = await bcryptjs.hash(password, salt);
 
 			const sId = uuid.v4();
-			const insertUser = `INSERT INTO staff (sId, name, email, password) VALUES ('${sId}','${name}','${email}','${encryptedPassword}')`;
+			const insertUser = `INSERT INTO staff VALUES ('${sId}','${name}','${email}','${encryptedPassword}','${dob}','${role}','${gender}','${doj}','${contact}')`;
 
 			dbConnection.query(insertUser, (err, result) => {
 				if (err) throw new Error(err);
@@ -68,7 +68,7 @@ const registerStaff = asyncHandler(async (req, res) => {
 					name,
 					email,
 				};
-				console.log(generateJWT(newUser.sId));
+
 				res.status(201).json({
 					...newUser,
 					token: generateJWT(newUser.sId),
@@ -85,7 +85,7 @@ const logInStaff = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) {
 		res.status(404);
-		throw new Error('Invalid user credentials');
+		throw new Error('Invalid staff user credentials');
 	}
 
 	//check if user with given email is present in system
@@ -96,7 +96,7 @@ const logInStaff = asyncHandler(async (req, res) => {
 
 		if (result.length === 0) {
 			res.status(404);
-			res.send('User does not exists!');
+			res.send('Staff User does not exists!');
 		} else {
 			//decrypt the password
 			const isCorrectPass = await bcryptjs.compare(
