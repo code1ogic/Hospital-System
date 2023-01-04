@@ -19,6 +19,7 @@ app.use('/api/patients', require('./routes/patientRoutes'));
 app.use('/api/doctors', require('./routes/doctorRoutes'));
 app.use('/api/staff', require('./routes/staffRoutes'));
 app.use('/api/patient-history', require('./routes/patientHistoryRoutes'));
+app.use('/api/appointments', require('./routes/appointmentsRoutes'));
 
 app.use(errorHandler);
 
