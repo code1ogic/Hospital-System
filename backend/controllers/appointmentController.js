@@ -1,17 +1,29 @@
 const asyncHandler = require('express-async-handler');
+const moment = require('moment-timezone');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
 
-// @desc Get all appointments. if date is not passed , API will return todays appointments
-// if date is passed, it will return appointments after that date till todays date
+// @desc Get all appointments. if date is not passed , API will return only todays appointments
+// if date is passed, starting from passed date, it will return all appointments till todays date
 // @route GET /api/appointments?dId=id&date=date
 // @access Public
 const getAppointments = asyncHandler(async (req, res) => {
 	const { dId } = req.query;
 	//set here todays date
-	const todaysDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-	const date = req.query.date ? req.query.date : todaysDate;
+	const todaysDate = moment(new Date()).tz('Asia/Kolkata');
+
+	const startOfDay = moment
+		.utc(todaysDate.startOf('day'))
+		.format('YYYY-MM-DD HH:mm:ss');
+
+	const endOfDay = moment
+		.utc(todaysDate.endOf('day'))
+		.format('YYYY-MM-DD HH:mm:ss');
+
+	const date = req.query.date
+		? moment.utc(req.query.date).format('YYYY-MM-DD HH:mm:ss')
+		: startOfDay;
 
 	let response = {};
 	//check doctorId present and get the details
@@ -23,7 +35,7 @@ const getAppointments = asyncHandler(async (req, res) => {
 				res.status(404).send('Doctor user do not exist! Invalid doctor Id');
 			} else {
 				response = result[0];
-				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, appt.apptDate, appt.status FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${todaysDate}' ORDER BY appt.apptDate, appt.status;`;
+				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, CONVERT_TZ(appt.apptDate,'+00:00','+5:30') as apptDate, CONVERT_TZ(appt.lastUpdate,'+00:00','+5:30') as apptLastUpdate, appt.status FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${endOfDay}' ORDER BY appt.apptDate, appt.status;`;
 				dbConnection.query(sql, (err, result) => {
 					if (err) throw err;
 					response = { ...response, appointments: result };
@@ -78,7 +90,7 @@ const createAppointment = asyncHandler(async (req, res) => {
 											);
 									else {
 										const aId = uuid.v4();
-										const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${date}','${type}','${information}',0);`;
+										const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${date}','${date}','${type}','${information}',0);`;
 
 										dbConnection.query(sql, (err, result) => {
 											if (err) throw new Error(err);
@@ -100,4 +112,50 @@ const createAppointment = asyncHandler(async (req, res) => {
 	);
 });
 
-module.exports = { getAppointments, createAppointment };
+// @desc Update an appointment
+// @route PUT /api/appointments/:id
+// @access Public
+
+const updateAppointment = asyncHandler(async (req, res) => {
+	const aId = req.params.id;
+	if (!aId) {
+		res.status(400);
+		throw new Error(
+			'Invalid update appointment request! Kindly pass valid fields!'
+		);
+	}
+	//for now these fields must be present
+	const { symptoms, reports, prescription, comments } = req.body;
+	const status = req.body.status ? req.body.status : 0;
+
+	dbConnection.query(
+		`UPDATE appointment SET status=${status} WHERE aId = '${aId}';`,
+		(err, result) => {
+			if (err) throw err;
+			if (result.affectedRows === 0)
+				res.status(404).send('Invalid Id, given appointment does not exists!');
+			else {
+				dbConnection.query(
+					`SELECT * from appointment WHERE aId = '${aId}';`,
+					(err, result) => {
+						if (err) throw err;
+						const { pId, dId } = result[0];
+						const apptDate = moment
+							.utc(result[0].apptDate)
+							.format('YYYY-MM-DD HH:mm:ss');
+						const sql = `INSERT INTO patientHistory VALUES('${pId}','${aId}','${dId}','${apptDate}','${symptoms}','${prescription}','${reports}','${comments}') ON DUPLICATE KEY UPDATE symptoms='${symptoms}', prescription='${prescription}', reports='${reports}' ,comments='${comments}';`;
+						dbConnection.query(sql, (err, result) => {
+							if (err) throw err;
+							res.status(201).json({
+								pId,
+								aId,
+								status,
+							});
+						});
+					}
+				);
+			}
+		}
+	);
+});
+module.exports = { getAppointments, createAppointment, updateAppointment };
