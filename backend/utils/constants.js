@@ -6,4 +6,6 @@ const ADD_DOCTOR =
 
 const ADD_STAFF = '<h3>We are so glad you have joined us as a Staff!</h3>';
 
-module.exports = { ADD_DOCTOR, ADD_PATIENT, ADD_STAFF };
+const DATE_FORMAT_STRING = 'YYYY-MM-DD HH:mm:ss';
+
+module.exports = { ADD_DOCTOR, ADD_PATIENT, ADD_STAFF, DATE_FORMAT_STRING };

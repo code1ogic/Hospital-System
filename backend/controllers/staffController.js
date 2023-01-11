@@ -4,7 +4,7 @@ const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
 const { generateJWT } = require('../controllers/doctorController');
-const { ADD_STAFF } = require('../constants');
+const { ADD_STAFF } = require('../utils/constants');
 const { sendEmail } = require('../config/email');
 
 // @desc Get all staff members

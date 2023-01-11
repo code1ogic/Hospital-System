@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
-const { ADD_DOCTOR } = require('../constants');
+const { ADD_DOCTOR } = require('../utils/constants');
 const { sendEmail } = require('../config/email');
 
 const generateJWT = (id) => {

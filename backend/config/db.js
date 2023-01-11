@@ -26,7 +26,7 @@ const connectDB = async () => {
 		const tableAppointment =
 			'CREATE TABLE IF NOT EXISTS appointment (aId varchar(255) NOT NULL, dId varchar(255), pId varchar(255) NOT NULL, apptDate DATETIME, lastUpdate DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, type varchar(255),information varchar(255),status TINYINT, PRIMARY KEY(aId));';
 		const tablePatientHistory =
-			'CREATE TABLE IF NOT EXISTS patientHistory (pId varchar(255) NOT NULL, aId varchar(255), dId varchar(255), doa DATETIME, symptoms varchar(255), prescription varchar(255),reports varchar(255),comments varchar(255),PRIMARY KEY(pId));';
+			'CREATE TABLE IF NOT EXISTS patientHistory (pId varchar(255) NOT NULL, aId varchar(255) NOT NULL, dId varchar(255), doa DATETIME, symptoms varchar(255), prescription varchar(255),reports varchar(255),comments varchar(255),PRIMARY KEY(aId));';
 
 		dbConnection.query(tableDoctors, (error, result, fields) => {
 			if (error) {
