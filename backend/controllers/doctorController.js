@@ -4,21 +4,11 @@ const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
+const { ADD_DOCTOR } = require('../utils/constants');
+const { sendEmail } = require('../config/email');
 
 const generateJWT = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
-};
-
-// TODO : fix this
-const validateDoctorId = async (id) => {
-	const searchQuery = `SELECT * FROM doctors WHERE dId = '${id}'`;
-	let doctor;
-	dbConnection.query(searchQuery, (err, result) => {
-		if (err) throw new Error(err);
-		if (result.length === 1) doctor = result[0];
-		else doctor = false;
-	});
-	return doctor;
 };
 
 // @desc Get all doctors
@@ -97,7 +87,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
 			const dId = uuid.v4();
 			const insertUser = `INSERT INTO doctors VALUES ('${dId}','${name}','${email}','${encryptedPassword}','${dob}','${degree}','${department}','${gender}','${doj}','${contact}')`;
 
-			dbConnection.query(insertUser, (err, result) => {
+			dbConnection.query(insertUser, async (err, result) => {
 				if (err) throw new Error(err);
 
 				const newUser = {
@@ -110,6 +100,12 @@ const registerDoctor = asyncHandler(async (req, res) => {
 					...newUser,
 					token: generateJWT(newUser.dId),
 				});
+
+				try {
+					await sendEmail(email, ...[, ,], ADD_DOCTOR);
+				} catch (err) {
+					console.error(err);
+				}
 			});
 		}
 	});
@@ -163,5 +159,4 @@ module.exports = {
 	logInDoctor,
 	getMe,
 	generateJWT,
-	validateDoctorId,
 };

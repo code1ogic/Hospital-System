@@ -4,6 +4,8 @@ const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
 const { generateJWT } = require('../controllers/doctorController');
+const { ADD_STAFF } = require('../utils/constants');
+const { sendEmail } = require('../config/email');
 
 // @desc Get all staff members
 // @route GET /api/staff
@@ -60,7 +62,7 @@ const registerStaff = asyncHandler(async (req, res) => {
 			const sId = uuid.v4();
 			const insertUser = `INSERT INTO staff VALUES ('${sId}','${name}','${email}','${encryptedPassword}','${dob}','${role}','${gender}','${doj}','${contact}')`;
 
-			dbConnection.query(insertUser, (err, result) => {
+			dbConnection.query(insertUser, async (err, result) => {
 				if (err) throw new Error(err);
 
 				const newUser = {
@@ -73,6 +75,12 @@ const registerStaff = asyncHandler(async (req, res) => {
 					...newUser,
 					token: generateJWT(newUser.sId),
 				});
+
+				try {
+					await sendEmail(email, ...[, ,], ADD_STAFF);
+				} catch (err) {
+					console.error(err);
+				}
 			});
 		}
 	});

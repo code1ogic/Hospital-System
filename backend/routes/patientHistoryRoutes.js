@@ -1,9 +1,12 @@
 const express = require('express');
+
+const {
+	getPatientHistory,
+} = require('../controllers/patientHistoryController');
+
 const router = express.Router();
 
 //Get all patients
-router.get('/', (req, res) => {
-	res.status(200).send('Get Patient history!');
-});
+router.get('/:id', getPatientHistory);
 
 module.exports = router;
