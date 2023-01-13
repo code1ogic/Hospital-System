@@ -3,7 +3,7 @@ const bcryptjs = require('bcrypt');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
-const { generateJWT } = require('../controllers/doctorController');
+const { generateJWT } = require('../utils/helpers');
 const { ADD_STAFF } = require('../utils/constants');
 const { sendEmail } = require('../config/email');
 
@@ -11,7 +11,7 @@ const { sendEmail } = require('../config/email');
 // @route GET /api/staff
 // @access Public
 const getStaff = asyncHandler(async (req, res) => {
-	const sql = `SELECT * FROM staff;`;
+	const sql = `SELECT sId,name,email,dob,role,gender,doj,contact FROM staff;`;
 
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
@@ -31,7 +31,23 @@ const getAStaff = asyncHandler(async (req, res) => {
 
 		if (result.length === 0) {
 			res.status(404).send('Staff User Does not exists!');
-		} else res.status(200).json(result[0]);
+			return;
+		}
+		const { password, ...staff } = result[0];
+		res.status(200).json(staff);
+	});
+});
+
+// @desc Get a staff profile
+// @route GET /api/staff/me
+// @access Private
+const getMe = asyncHandler(async (req, res) => {
+	const sql = `SELECT * FROM staff where sid='${req.user}';`;
+
+	dbConnection.query(sql, (err, result) => {
+		if (err) throw err;
+		const { password, ...staff } = result[0];
+		res.status(200).json(staff);
 	});
 });
 
@@ -124,18 +140,6 @@ const logInStaff = asyncHandler(async (req, res) => {
 				});
 			}
 		}
-	});
-});
-
-// @desc Get a staff profile
-// @route GET /api/staff/me
-// @access Private
-const getMe = asyncHandler(async (req, res) => {
-	const sql = `SELECT * FROM staff where sid='${req.user}';`;
-
-	dbConnection.query(sql, (err, result) => {
-		if (err) throw err;
-		else res.status(200).json(result[0]);
 	});
 });
 

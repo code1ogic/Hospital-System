@@ -31,7 +31,7 @@ const getPatient = asyncHandler(async (req, res) => {
 });
 
 // @desc Get a patient by its contact No
-// @route GET /api/patients/find
+// @route GET /api/patients/find?contact=contactNumber
 // @access Public
 const findPatient = asyncHandler(async (req, res) => {
 	const { contact } = req.query;
