@@ -1,4 +1,9 @@
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
+
+const generateJWT = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
+};
 
 const { DATE_FORMAT_STRING } = require('./constants');
 
@@ -13,4 +18,10 @@ const getDate = (date = new moment()) =>
 
 const isDateValid = (date) => moment(date).isValid();
 
-module.exports = { getDate, getStartOfDay, getEndofDay, isDateValid };
+module.exports = {
+	generateJWT,
+	getDate,
+	getStartOfDay,
+	getEndofDay,
+	isDateValid,
+};

@@ -1,21 +1,17 @@
 const asyncHandler = require('express-async-handler');
 const bcryptjs = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
+const { generateJWT } = require('../utils/helpers');
 const { ADD_DOCTOR } = require('../utils/constants');
 const { sendEmail } = require('../config/email');
-
-const generateJWT = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: '12h' });
-};
 
 // @desc Get all doctors
 // @route GET /api/doctors
 // @access Public
 const getDoctors = asyncHandler(async (req, res) => {
-	const sql = `SELECT * FROM doctors;`;
+	const sql = `SELECT dId,name,email,dob,degree,department,gender,doj,contact FROM doctors;`;
 
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
@@ -34,7 +30,10 @@ const getDoctor = asyncHandler(async (req, res) => {
 		if (err) throw err;
 		if (result.length === 0) {
 			res.status(404).send('Doctor User does not exists!');
-		} else res.status(200).json(result[0]);
+			return;
+		}
+		const { password, ...doctor } = result[0];
+		res.status(200).json(doctor);
 	});
 });
 
@@ -46,7 +45,8 @@ const getMe = asyncHandler(async (req, res) => {
 
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
-		else res.status(200).json(result[0]);
+		const { password, ...doctor } = result[0];
+		res.status(200).json(doctor);
 	});
 });
 
@@ -158,5 +158,4 @@ module.exports = {
 	registerDoctor,
 	logInDoctor,
 	getMe,
-	generateJWT,
 };
