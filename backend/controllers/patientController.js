@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
+const { sendSMS } = require('../config/sms');
+const { ADD_PATIENT } = require('../utils/constants');
 
 // @desc Get all patients
 // @route GET /api/patients
@@ -72,7 +74,7 @@ const addPatient = asyncHandler(async (req, res) => {
 			const pId = uuid.v4();
 			const insertUser = `INSERT INTO patients (pId, name, contact,address,dob,gender) VALUES ('${pId}','${name}','${contact}','${address}','${dob}','${gender}')`;
 
-			dbConnection.query(insertUser, (err, result) => {
+			dbConnection.query(insertUser, async (err, result) => {
 				if (err) throw new Error(err);
 
 				const newUser = {
@@ -84,6 +86,9 @@ const addPatient = asyncHandler(async (req, res) => {
 				res.status(201).json({
 					...newUser,
 				});
+
+				//send text message
+				await sendSMS(ADD_PATIENT, [contact]);
 			});
 		}
 	});

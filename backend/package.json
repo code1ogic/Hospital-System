@@ -33,6 +33,7 @@
   "devDependencies": {
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
+    "fast-two-sms": "^3.0.0",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20"
   }
