@@ -6,6 +6,15 @@ const ADD_DOCTOR =
 
 const ADD_STAFF = '<h3>We are so glad you have joined us as a Staff!</h3>';
 
+const NEW_APPOINTMENT =
+	'Your Appointment has been booked and confirmed. Thank you! \n Appointment Details: \n';
+
 const DATE_FORMAT_STRING = 'YYYY-MM-DD HH:mm:ss';
 
-module.exports = { ADD_DOCTOR, ADD_PATIENT, ADD_STAFF, DATE_FORMAT_STRING };
+module.exports = {
+	ADD_DOCTOR,
+	ADD_PATIENT,
+	ADD_STAFF,
+	DATE_FORMAT_STRING,
+	NEW_APPOINTMENT,
+};

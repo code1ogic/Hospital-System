@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const uuid = require('uuid');
 
 const { dbConnection } = require('../config/db');
+const { sendSMS } = require('../config/sms');
+const { NEW_APPOINTMENT } = require('../utils/constants');
 const {
 	getDate,
 	getEndofDay,
@@ -96,7 +98,7 @@ const createAppointment = asyncHandler(async (req, res) => {
 										const aId = uuid.v4();
 										const sql = `INSERT INTO appointment VALUES ('${aId}','${dId}','${pId}','${dateReceived}','${dateReceived}','${type}','${information}',0);`;
 
-										dbConnection.query(sql, (err, result) => {
+										dbConnection.query(sql, async (err, result) => {
 											if (err) throw new Error(err);
 											res.status(200).json({
 												aId,
@@ -104,6 +106,12 @@ const createAppointment = asyncHandler(async (req, res) => {
 												...response,
 												status: 0,
 											});
+
+											//send a text message to patient
+											const sms =
+												NEW_APPOINTMENT +
+												`${response.date} \n ${response.type} \n ${response.information} with doctor ${response.name}`;
+											await sendSMS(sms, [response.patientContact]);
 										});
 									}
 								}
