@@ -19,8 +19,7 @@ const getDate = (date = new moment()) =>
 const isDateValid = (date) => moment(date).isValid();
 
 const getAlertSMS = (appointment, queueNumber) => {
-	return `Currently your number in queue is ${queueNumber}! Appointment details : 
-	${appointment} `;
+	return `Currently your number in queue is ${queueNumber}! Appointment details : ${appointment} `;
 };
 
 module.exports = {

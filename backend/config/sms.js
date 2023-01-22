@@ -14,6 +14,8 @@ const sendSMS = async (message, numbers) => {
 			numbers,
 		});
 		console.log(response.message);
+		if (!response) throw new Error('Text message not sent!');
+		return response;
 	} catch (error) {
 		console.error(error);
 		throw new Error('Text message could not get sent!');
