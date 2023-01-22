@@ -1,0 +1,27 @@
+.example-form {
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+  margin-top: 10px;
+}
+
+h2 {
+  color: var(--primary);
+}
+
+.form-content {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.patientObj-row {
+  margin-top: 10px;
+}
+
+.mat-dialog-content {
+  min-width: 900px;
+}

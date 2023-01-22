@@ -14,7 +14,7 @@ export class StaffDashboardComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("staff_token");
+    localStorage.removeItem("staff_id");
     this.router.navigate(['staff/login'])
   }
 }

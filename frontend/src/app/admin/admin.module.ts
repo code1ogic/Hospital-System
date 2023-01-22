@@ -10,6 +10,7 @@ import { AddStaffDialogComponent } from './component/admin-dashboard/dialog/add-
 import { HttpClientModule } from '@angular/common/http';
 import { ViewAllDoctorsComponent } from './component/admin-dashboard/view-all-doctors/view-all-doctors.component';
 import { ViewAllPatientsComponent } from './component/admin-dashboard/view-all-patients/view-all-patients.component';
+import { ViewAllStaffComponent } from './component/admin-dashboard/view-all-staff/view-all-staff.component';
 
 
 
@@ -21,7 +22,8 @@ import { ViewAllPatientsComponent } from './component/admin-dashboard/view-all-p
     AddDoctorDialogComponent,
     AddStaffDialogComponent,
     ViewAllDoctorsComponent,
-    ViewAllPatientsComponent
+    ViewAllPatientsComponent,
+    ViewAllStaffComponent
   ],
   imports: [
     CommonModule,

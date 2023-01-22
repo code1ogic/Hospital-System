@@ -1,36 +1,59 @@
 <form class="example-form text-center" [formGroup]="staff" >
   <h2 class="text-warning">Register Staff</h2>
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Full Name</mat-label>
-    <input matInput  formControlName="name" name="name">
-    <mat-error *ngIf="staff.get('name')?.invalid && (staff.get('name')?.dirty || staff.get('name')?.touched)">
-      Please enter valid name.
-    </mat-error>
-  </mat-form-field>
+  <div class="form-content">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Full Name</mat-label>
+      <input matInput  formControlName="name" name="name">
+      <mat-error *ngIf="staff.get('name')?.invalid && (staff.get('name')?.dirty || staff.get('name')?.touched)">
+        Please enter valid name.
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput placeholder="abc@gmail.com" formControlName="email" name="email">
-    <mat-error *ngIf="staff.get('email')?.invalid && (staff.get('email')?.dirty || staff.get('email')?.touched)">
-      Please enter a valid email address.
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="abc@gmail.com" formControlName="email" name="email">
+      <mat-error *ngIf="staff.get('email')?.invalid && (staff.get('email')?.dirty || staff.get('email')?.touched)">
+        Please enter a valid email address.
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" name="password">
-    <mat-error *ngIf="staff.get('password')?.invalid && (staff.get('password')?.dirty || staff.get('password')?.touched)">
-      Please enter a valid password
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" name="password">
+      <mat-error *ngIf="staff.get('password')?.invalid && (staff.get('password')?.dirty || staff.get('password')?.touched)">
+        Please enter a valid password
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="outline">
-    <mat-label>Contact No</mat-label>
-    <input matInput placeholder="9287458455" formControlName="contactNo" name="contactNo">
-    <mat-error *ngIf="staff.get('contactNo')?.invalid && (staff.get('contactNo')?.dirty || staff.get('contactNo')?.touched)">
-      Please enter a valid contact number.
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Contact No</mat-label>
+      <input matInput placeholder="9287458455" formControlName="contact" name="contact">
+      <mat-error *ngIf="staff.get('contact')?.invalid && (staff.get('contact')?.dirty || staff.get('contact')?.touched)">
+        Please enter a valid contact number.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Select gender</mat-label>
+      <mat-select formControlName="gender" name="gender">
+        <mat-option *ngFor="let gender of gender" value="{{gender}}">{{gender}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="staff.get('gender')?.invalid && (staff.get('gender')?.dirty || staff.get('gender')?.touched)">
+        Please select a valid option.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Select Role</mat-label>
+      <mat-select formControlName="role" name="role">
+        <mat-option *ngFor="let role of roles" value="{{role}}">{{role}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="staff.get('role')?.invalid && (staff.get('role')?.dirty || staff.get('role')?.touched)">
+        Please select a valid option.
+      </mat-error>
+    </mat-form-field>
+
+  </div>
 
   <div align="end">
     <button mat-button cdkFocusInitial [disabled]="!staff.valid" (click)="addStaff()">Ok</button>

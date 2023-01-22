@@ -37,7 +37,7 @@ const getAppointments = asyncHandler(async (req, res) => {
 				res.status(404).send('Doctor user do not exist! Invalid doctor Id');
 			} else {
 				response = result[0];
-				const sql = `SELECT appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, CONVERT_TZ(appt.apptDate,'+00:00','+5:30') as apptDate, CONVERT_TZ(appt.lastUpdate,'+00:00','+5:30') as apptLastModified, appt.status FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${endOfDay}' ORDER BY appt.apptDate, appt.status;`;
+				const sql = `SELECT pt.pId, appt.aId, pt.name as patientName, pt.contact as patientContact, appt.type, appt.information, CONVERT_TZ(appt.apptDate,'+00:00','+5:30') as apptDate, CONVERT_TZ(appt.lastUpdate,'+00:00','+5:30') as apptLastModified, appt.status FROM appointment as appt LEFT OUTER JOIN patients as pt on appt.pId = pt.pId WHERE appt.dId='${dId}' AND appt.apptDate BETWEEN '${date}' AND '${endOfDay}' ORDER BY appt.apptDate, appt.status;`;
 				dbConnection.query(sql, (err, result) => {
 					if (err) throw err;
 					response = { ...response, appointments: result };

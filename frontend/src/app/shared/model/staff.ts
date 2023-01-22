@@ -3,5 +3,7 @@ export interface Staff {
   email : string,
   passoword : string,
   name : string,
-  contactNo : string
+  contact : string,
+  gender : string,
+  role : string
 }

@@ -45,7 +45,7 @@ const findPatient = asyncHandler(async (req, res) => {
 	dbConnection.query(sql, (err, result) => {
 		if (err) throw err;
 
-		if (result.length === 0) res.status(404).send('patient User do not exist!');
+		if (result.length === 0) res.status(404).send('patient User do not exist! Please register patient.');
 
 		res.status(200).json(result[0]);
 	});

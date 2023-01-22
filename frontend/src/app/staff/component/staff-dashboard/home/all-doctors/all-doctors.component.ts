@@ -27,7 +27,6 @@ export class AllDoctorsComponent implements OnInit {
   getAllDoctors() {
     this.staffDataService.getAllDoctors().subscribe(res => {
       this.doctorsList = res;
-      console.log(res);
       this.doctorDataSource = new MatTableDataSource(this.doctorsList);
       this.doctorDataSource.paginator = this.doctorPaginator;
       this.doctorDataSource.sort = this.doctorSort;

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OpenDialogComponent } from 'src/app/shared/component/open-dialog/open-dialog.component';
+import { Doctor } from 'src/app/shared/model/doctor';
+import { Patient } from 'src/app/shared/model/patient';
+import { Staff } from 'src/app/shared/model/staff';
 import { DataService } from '../../service/data.service';
 import { AddDoctorDialogComponent } from './dialog/add-doctor-dialog/add-doctor-dialog.component';
 import { AddStaffDialogComponent } from './dialog/add-staff-dialog/add-staff-dialog.component';
@@ -12,12 +15,17 @@ import { AddStaffDialogComponent } from './dialog/add-staff-dialog/add-staff-dia
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-
+  allStaff : Staff[] = [];
+  allDoctors : Doctor[] = []
+  allPatients : Patient[] = []
   constructor(public dialog: MatDialog,
               private dataService : DataService,
               private _snackBar: MatSnackBar) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.getAllStaff();
+    this.getAllDoctors();
+    this.getAllPatients();
   }
 
   addDoctor() {
@@ -34,12 +42,14 @@ export class AdminDashboardComponent implements OnInit {
           this._snackBar.open("Doctor Regitration is successful", "Ok",{
             duration: 3000
           });
+          this.ngOnInit();
         }, err => {
+          console.log(err);
           this.dialog.open(OpenDialogComponent,{
             height: 'auto',
             width: '400px',
             position: {top: '10px'},
-            data: { message: err.message, title : 'Registration Failed'}})
+            data: { message: err.error, title : 'Registration Failed'}})
         })
       }
     })
@@ -59,8 +69,34 @@ export class AdminDashboardComponent implements OnInit {
           this._snackBar.open("Staff Regitration is successful", "Ok",{
             duration: 3000
           });
+          this.ngOnInit();
+        }, err => {
+          console.log(err);
+          this.dialog.open(OpenDialogComponent,{
+            height: 'auto',
+            width: '400px',
+            position: {top: '10px'},
+            data: { message: err.error, title : 'Registration Failed'}})
         })
       }
+    })
+  }
+
+  getAllStaff() {
+    this.dataService.getAllStaff().subscribe(res => {
+      this.allStaff = res;
+    })
+  }
+
+  getAllDoctors() {
+    this.dataService.getAllDoctors().subscribe(res => {
+      this.allDoctors = res;
+    })
+  }
+
+  getAllPatients() {
+    this.dataService.getAllPatients().subscribe(res => {
+      this.allPatients = res;
     })
   }
 

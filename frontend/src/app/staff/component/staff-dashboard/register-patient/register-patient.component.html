@@ -1,14 +1,24 @@
 <div class="container-fluid m-0 p-0">
 
-  <mat-stepper orientation="vertical">
+  <!-- <mat-stepper #stepper orientation="vertical">
     <mat-step>
       <ng-template matStepLabel>Personal Details</ng-template>
       <ng-template matStepContent>
-        <p>Enter Patient Name :</p>
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <input matInput placeholder="First name Last name" required name="name" [(ngModel)]="patientObj.name">
-        </mat-form-field> <br>
+        <div>
+          <p>Enter Patient Name :</p>
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="First name Last name" required name="name" [(ngModel)]="patientObj.name" required>
+          </mat-form-field>
+        </div>
+        <div>
+          <p>Select Gender :</p>
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="First name Last name" required name="name" [(ngModel)]="patientObj.name" required>
+          </mat-form-field>
+        </div>
+        <br>
         <button mat-raised-button matStepperNext>Next</button>
       </ng-template>
     </mat-step>
@@ -29,7 +39,7 @@
         <div *ngIf="patientObj.name && patientObj.contact">
           <p>Are you sure you want register ?</p>
           <button class="me-2" mat-raised-button (click)="ngOnInit()" >No</button>
-          <button mat-raised-button color="primary" (click)="registerPatient()">Yes</button>
+          <button mat-raised-button color="primary" (click)="registerPatient()" (click)="stepper.reset()">Yes</button>
         </div>
         <div *ngIf="!patientObj.name">
           <p>Please Enter valid personal details</p>
@@ -39,8 +49,65 @@
         </div>
       </ng-template>
     </mat-step>
-  </mat-stepper>
+  </mat-stepper> -->
 
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="personalDetailsFormGroup">
+      <form [formGroup]="personalDetailsFormGroup">
+        <ng-template matStepLabel>Personal Details </ng-template>
+        <mat-form-field appearance="outline" >
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" placeholder="Last name, First name" required>
+        </mat-form-field> <br>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Select gender</mat-label>
+          <mat-select formControlName="gender" name="gender">
+            <mat-option *ngFor="let gender of gender" value="{{gender}}">{{gender}}</mat-option>
+          </mat-select>
+        </mat-form-field> <br>
+        <mat-form-field class="example-full-width" appearance="outline" style="width : 201px">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dob">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="mt-3">
+          <button mat-button matStepperNext align="end">Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="contactDetailsFormGroup">
+      <form [formGroup]="contactDetailsFormGroup">
+        <ng-template matStepLabel>Contact Details</ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Contact No. </mat-label>
+          <input matInput formControlName="contact" placeholder="Ex. 9284759854"
+                 required>
+        </mat-form-field> <br>
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" placeholder="Ex. 1 Main St, New York, NY"
+                 required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>Click register button to register a patient.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Register</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 
 </div>
 

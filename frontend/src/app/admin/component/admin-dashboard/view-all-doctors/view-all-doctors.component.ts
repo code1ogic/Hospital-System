@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,23 +17,16 @@ export class ViewAllDoctorsComponent implements OnInit {
   @ViewChild(MatPaginator) doctorPaginator !: MatPaginator;
   @ViewChild(MatSort) doctorSort !: MatSort;
 
-  doctorsList : Doctor[] = [];
+  @Input() doctorsList : Doctor[] = [];
   constructor(private dataService : DataService) { }
 
   ngOnInit(): void {
-    this.getAllDoctors();
   }
 
-  getAllDoctors() {
-    this.dataService.getAllDoctors().subscribe(res => {
-      this.doctorsList = res;
-      console.log(res);
+  ngOnChanges() {
       this.doctorDataSource = new MatTableDataSource(this.doctorsList);
       this.doctorDataSource.paginator = this.doctorPaginator;
       this.doctorDataSource.sort = this.doctorSort;
-    }, err => {
-      console.log('')
-    })
   }
 
   applyDoctorFilter(event: Event) {

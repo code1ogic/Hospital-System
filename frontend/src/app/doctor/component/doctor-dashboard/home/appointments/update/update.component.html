@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Update Appointment</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="patientObj-row" *ngIf="patientObj.name">
+    Name : {{patientObj.name}}
+  </div>
+  <div class="patientObj-row" *ngIf="patientObj.gender">
+    Gender : {{patientObj.gender}}
+  </div>
+  <div class="patientObj-row" *ngIf="patientObj.contact">
+    Contact Number : {{patientObj.contact}}
+  </div>
+
+  <form [formGroup]="appointmentObj">
+    <div class="form-content">
+      <mat-form-field class="example-full-width" appearance="outline" hidden>
+        <mat-label>aId</mat-label>
+        <input matInput  formControlName="aId" name="aId">
+        <mat-error *ngIf="appointmentObj.get('aId')?.invalid && (appointmentObj.get('aId')?.dirty || appointmentObj.get('aId')?.touched)">
+          Please enter valid name.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Symptoms</mat-label>
+        <input matInput  formControlName="symptoms" name="symptoms">
+        <mat-error *ngIf="appointmentObj.get('symptoms')?.invalid && (appointmentObj.get('symptoms')?.dirty || appointmentObj.get('symptoms')?.touched)">
+          Please enter valid name.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Reports</mat-label>
+        <input matInput placeholder="Reports" formControlName="reports" name="reports">
+        <mat-error *ngIf="appointmentObj.get('reports')?.invalid && (appointmentObj.get('reports')?.dirty || appointmentObj.get('reports')?.touched)">
+          Please enter a valid reports.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Prescription</mat-label>
+        <input matInput placeholder="Prescription" formControlName="prescription" name="prescription">
+        <mat-error *ngIf="appointmentObj.get('prescription')?.invalid && (appointmentObj.get('prescription')?.dirty || appointmentObj.get('prescription')?.touched)">
+          Please enter a valid prescriptions.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Comments</mat-label>
+        <input matInput placeholder="comments" formControlName="comments" name="comments">
+        <mat-error *ngIf="appointmentObj.get('comments')?.invalid && (appointmentObj.get('comments')?.dirty || appointmentObj.get('comments')?.touched)">
+          Please enter a valid comments.
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="updateAppointment()">Update</button>
+</mat-dialog-actions>

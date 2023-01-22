@@ -1,10 +1,36 @@
 <div class="container">
-  <div class="example-container">
-    <mat-form-field appearance="fill">
-      <mat-label>Enter conatct number</mat-label>
-      <input matInput placeholder="pat@example.com" [formControl]="contact" required>
-      <mat-error *ngIf="contact.invalid">{{getErrorMessage()}}</mat-error>
-    </mat-form-field>
-  </div>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-6 mt-5">
+        <div class="example-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Enter conatct number</mat-label>
+            <input matInput placeholder="pat@example.com" [(ngModel)]="contact">
+          </mat-form-field>
+          <button class="ms-5" mat-raised-button color="primary" (click)="getPatient()" *ngIf="!patient.pId" >Check</button>
 
+          <div *ngIf="patient && patient.pId">
+            <h4>Select Doctor details : </h4>
+            <mat-form-field class="example-full-width" appearance="outline" >
+              <mat-label>Select doctor</mat-label>
+              <mat-select [(ngModel)]="dId">
+                <mat-option *ngFor="let doctor of allDoctors" value="{{doctor.dId}}">{{doctor.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline" style="width : 201px">
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="date">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="bookAppointment()">book Appointment</button>
+          </div>
+
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
 </div>

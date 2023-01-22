@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Patient History</h2>
+<hr>
+<mat-dialog-content class="mat-typography mb-3">
+  <div class="row">
+    <div class="col">
+      <h5>Name : {{patientObj.patientName}}</h5>
+    </div>
+    <div class="col">
+      <h5>Gender : {{patientObj.patientGender}}</h5>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="patientObj.appointments.length > 0" class="mb-2">
+    <h5>Appointment : </h5>
+    <mat-accordion  *ngFor="let appointment of patientObj.appointments">
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false" class="mt-2">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{appointment.apptDate | date}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <p>Symptoms : {{appointment.symptoms}}</p>
+          </div>
+          <div class="col">
+            <p>Prescription : {{appointment.prescription}}</p>
+          </div>
+          <div class="col">
+            <p>Reports : {{appointment.reports}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>Department : {{appointment.department}}</p>
+          </div>
+          <div class="col">
+            <p>Doctor Name : {{appointment.doctorName}}</p>
+          </div>
+          <div class="col">
+            <p>Comments : {{appointment.comments}}</p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
