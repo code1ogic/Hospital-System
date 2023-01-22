@@ -32,7 +32,7 @@ export class AppointmentsComponent implements OnInit {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.todaysDate = this.datepipe.transform((new Date), 'mm-dd-yyyy');
+    this.todaysDate = this.datepipe.transform((new Date), 'MM-dd-yyyy');
     this.dId = localStorage.getItem("doctor_id");
     console.log(this.todaysDate);
     this.getAppointments();
