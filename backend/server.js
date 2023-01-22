@@ -21,6 +21,7 @@ app.use('/api/doctors', require('./routes/doctorRoutes'));
 app.use('/api/staff', require('./routes/staffRoutes'));
 app.use('/api/patient-history', require('./routes/patientHistoryRoutes'));
 app.use('/api/appointments', require('./routes/appointmentsRoutes'));
+app.use('/api/sendSMS', require('./routes/smsRoutes'));
 
 app.use(errorHandler);
 
