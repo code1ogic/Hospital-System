@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-6 mt-5">
+      <div class="example-container">
+        <div class="profiledata-row" *ngIf="profileData.name">
+          Name : {{profileData.name}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.email">
+          Email : {{profileData.email}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.degree">
+          Degree : {{profileData.degree}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.department">
+          Department : {{profileData.department}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.dob">
+          Date of Joining : {{profileData.dob | date}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.role">
+          Role : {{profileData.role}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.gender">
+          Gender : {{profileData.gender}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.doj">
+          Date of joining : {{profileData.doj | date}}
+        </div>
+        <div class="profiledata-row" *ngIf="profileData.contact">
+          Contact Number : {{profileData.contact}}
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

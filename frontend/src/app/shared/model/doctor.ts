@@ -1,6 +1,10 @@
 export interface Doctor {
+  dId : string,
   email : string,
   passoword : string,
   name : string,
-  contactNo: string
+  contact: string,
+  gender : string,
+  degree : string,
+  department : string
 }

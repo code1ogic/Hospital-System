@@ -9,3 +9,7 @@
   margin-top: 10px;
 }
 
+.form-content {
+  height: 400px;
+  overflow-y: auto;
+}

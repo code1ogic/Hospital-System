@@ -11,7 +11,8 @@ import { BookAppointmentComponent } from './component/staff-dashboard/book-appoi
 import { ProfileComponent } from './component/staff-dashboard/profile/profile.component';
 import { AllPatientsComponent } from './component/staff-dashboard/home/all-patients/all-patients.component';
 import { AllDoctorsComponent } from './component/staff-dashboard/home/all-doctors/all-doctors.component';
-
+import { DatePipe } from '@angular/common';
+import { AllAppointmentsComponent } from './component/staff-dashboard/home/all-appointments/all-appointments.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { AllDoctorsComponent } from './component/staff-dashboard/home/all-doctor
     BookAppointmentComponent,
     ProfileComponent,
     AllPatientsComponent,
-    AllDoctorsComponent
+    AllDoctorsComponent,
+    AllAppointmentsComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import { AllDoctorsComponent } from './component/staff-dashboard/home/all-doctor
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class StaffModule { }

@@ -30,4 +30,8 @@ export class DataService {
   getAllPatients() : Observable<Patient[]> {
     return this.http.get<Patient[]>(this.patientURL);
   }
+
+  getAllStaff() : Observable<Staff[]> {
+    return this.http.get<Staff[]>(this.staffURL);
+  }
 }

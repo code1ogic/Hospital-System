@@ -34,13 +34,20 @@
         <div class="row m-0 p-0">
           <div class="col" style="overflow-x: hidden">
             <div class="card bg-dark p-1">
-              <app-view-all-doctors></app-view-all-doctors>
+              <app-view-all-doctors [doctorsList]="allDoctors"></app-view-all-doctors>
             </div>
           </div>
 
           <div class="col" style="overflow-x: hidden">
             <div class="card bg-dark p-1">
-              <app-view-all-patients></app-view-all-patients>
+              <app-view-all-patients [patientList]="allPatients"></app-view-all-patients>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0 p-0 mt-3">
+          <div class="col-6">
+            <div class="card bg-dark p-1">
+              <app-view-all-staff [allStaffDetails]="allStaff"></app-view-all-staff>
             </div>
           </div>
         </div>

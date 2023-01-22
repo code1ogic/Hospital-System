@@ -8,14 +8,19 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./add-doctor-dialog.component.css']
 })
 export class AddDoctorDialogComponent implements OnInit {
-
+  gender : string[] = ['Male','Female', 'Other']
+  departments : string[] = ['Cardiology','Radiology','Neurology','Orthopedic','OPD']
+  degree : string[] = ['MBBS','MD','BDS','MDS']
   doctor : FormGroup;
   constructor(private fb : FormBuilder, private dialogRef: MatDialogRef<AddDoctorDialogComponent>) {
     this.doctor = fb.group({
       email: [Validators.required, Validators.email],
       name:  [Validators.required],
       password: [Validators.required, Validators.minLength(6)],
-      contactNo : [Validators.required]
+      contact : [Validators.required],
+      gender : [Validators.required],
+      department : [Validators.required],
+      degree : [Validators.required],
     });
   }
 
@@ -24,7 +29,10 @@ export class AddDoctorDialogComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       name: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      contactNo : new FormControl('', [Validators.required,])
+      contact : new FormControl('', [Validators.required,]),
+      gender : new FormControl('', [Validators.required,]),
+      department : new FormControl('', [Validators.required,]),
+      degree : new FormControl('', [Validators.required,])
     });
   }
 

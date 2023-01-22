@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   isStaffLoggedIn() {
-    return localStorage.getItem("staff_token");
+    return localStorage.getItem("staff_id");
   }
 
 }

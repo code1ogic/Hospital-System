@@ -8,14 +8,17 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./add-staff-dialog.component.css']
 })
 export class AddStaffDialogComponent implements OnInit {
-
+  gender : string[] = ['Male','Female', 'Other']
+  roles : string[] = ['Nerse','Receptionist','Ward Boy']
   staff : FormGroup;
   constructor(private fb : FormBuilder, private dialogRef: MatDialogRef<AddStaffDialogComponent>) {
     this.staff = fb.group({
       email: [Validators.required, Validators.email],
       name:  [Validators.required],
       password: [Validators.required, Validators.minLength(6)],
-      contactNo : [Validators.required]
+      contact : [Validators.required],
+      gender : [Validators.required],
+      role : [Validators.required]
     });
   }
 
@@ -24,7 +27,9 @@ export class AddStaffDialogComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       name: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      contactNo : new FormControl('', [Validators.required,])
+      contact : new FormControl('', [Validators.required,]),
+      gender : new FormControl('', [Validators.required,]),
+      role : new FormControl('', [Validators.required,])
     });
   }
 

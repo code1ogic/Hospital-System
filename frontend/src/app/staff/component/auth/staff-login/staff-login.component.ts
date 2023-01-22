@@ -46,7 +46,7 @@ export class StaffLoginComponent implements OnInit {
     }
     this.authService.staffLogin(data).subscribe(res => {
         this.router.navigate(['staff/dashboard'])
-        localStorage.setItem("staff_token",res.token);
+        localStorage.setItem("staff_id",res.sId);
     }, err => {
       const dialogRef = this.dialog.open(OpenDialogComponent,{
         height: '170px',
